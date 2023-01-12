@@ -1,0 +1,5 @@
+"0","my_numeric <- 42"
+"0","my_integer <- 2L #adding an L automatically denotes an integer"
+"0","my_character <- ""universe"""
+"0","my_logical <- FALSE"
+"0","my_complex <- 2+4i"

@@ -3,22 +3,24 @@
     "path": "~/GitHub/BIS15W2023_GJones/lab2/lab2_2.Rmd",
     "project_path": null,
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "2055916321",
     "contents": "",
     "dirty": false,
     "created": 1673554781209.0,
     "source_on_save": false,
-    "relative_order": 3,
+    "relative_order": 4,
     "properties": {
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "158,44",
+        "scrollLine": "143"
     },
     "folds": "",
-    "lastKnownWriteTime": 1673487471,
+    "lastKnownWriteTime": 1673560606,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1673487471,
+    "last_content_update": 1673560606889,
     "read_only": false,
     "read_only_alternatives": []
 }

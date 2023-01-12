@@ -3,15 +3,17 @@
     "path": "~/GitHub/BIS15W2023_GJones/lab1/lab1_hw.Rmd",
     "project_path": null,
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "2316682267",
     "contents": "",
     "dirty": false,
     "created": 1673555250369.0,
     "source_on_save": false,
-    "relative_order": 4,
+    "relative_order": 1,
     "properties": {
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "14,0",
+        "scrollLine": "0"
     },
     "folds": "",
     "lastKnownWriteTime": 1673488761,

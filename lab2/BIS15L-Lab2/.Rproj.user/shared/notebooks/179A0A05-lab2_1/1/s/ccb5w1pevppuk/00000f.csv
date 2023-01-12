@@ -1,0 +1,2 @@
+"0","my_integer <- "
+"0","  as.integer(my_numeric) #create a new object specified as an integer"
