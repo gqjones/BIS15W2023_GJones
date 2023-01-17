@@ -1,0 +1,9 @@
+"0","mammals <- readr::read_csv('C:/Users/gqlos/OneDrive/Documents/GitHub/BIS15W2023_GJones/lab3/data/mammal_lifehistories_v2.csv')"
+"2","[1mRows: [22m[34m1440[39m [1mColumns: [22m[34m13[39m"
+"2","[36m──[39m [1mColumn specification[22m [36m──────────────────────────────────────────────────────────────────────────────────────────────────────────────[39m
+[1mDelimiter:[22m "",""
+[31mchr[39m (4): order, family, Genus, species
+[32mdbl[39m (9): mass, gestation, newborn, weaning, wean mass, AFR, max. life, litter size, litters/year"
+"2","
+[36mℹ[39m Use `spec()` to retrieve the full column specification for this data.
+[36mℹ[39m Specify the column types or set `show_col_types = FALSE` to quiet this message."

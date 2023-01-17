@@ -1,0 +1,8 @@
+"0","hbirds <- data.frame(sex = Sex, length_in = Length, weight_oz = Weight) #renaming will become more helpful in later labs"
+"0","names(hbirds)"
+"1","[1]"
+"1"," ""sex""      "
+"1"," ""length_in"""
+"1"," ""weight_oz"""
+"1","
+"

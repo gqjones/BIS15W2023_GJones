@@ -1,0 +1,22 @@
+---
+title: "Lab3_WarmUp"
+output: html_document
+date: "2023-01-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+plants <- c('plant1','plant2','plant3','plant4','plant5')
+heights <- c(30.7, 37.6, 28.4, NA, 33.2)
+mass <- c(4, 5.2, 3.7, NA, 4.6)
+plant.matrix <- matrix(c(heights, mass), nrow=5, byrow=F)
+rownames(plant.matrix) <- c(plants)
+colnames(plant.matrix) <- c('height', 'mass')
+# Adding Means
+plant.means <- colMeans(plant.matrix, na.rm=TRUE)
+plant.matrix <- rbind(plant.matrix, plant.means)
+plant.matrix
+```

@@ -1,0 +1,6 @@
+"0","hot_springs$scientist <- as.factor(hot_springs$scientist)"
+"0","class(hot_springs$scientist)"
+"1","[1]"
+"1"," ""factor"""
+"1","
+"
