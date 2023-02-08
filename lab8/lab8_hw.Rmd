@@ -1,11 +1,11 @@
 ---
 title: "Lab 8 Homework"
-author: "Please Add Your Name Here"
+author: "Gabriel Jones"
 date: "`r Sys.Date()`"
 output:
   html_document:
     theme: spacelab
-    toc: no
+    keepmd: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -21,6 +21,7 @@ Make sure to use the formatting conventions of RMarkdown to make your report nea
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(janitor)
+library(here)
 ``` 
 
 ## Install `here`
@@ -34,9 +35,9 @@ For this homework, we will use a data set compiled by the Office of Environment 
 
 This homework loosely follows the tutorial of [R Ladies Sydney](https://rladiessydney.org/). If you get stuck, check it out!  
 
-1. Start by loading the data `sydneybeaches`. Do some exploratory analysis to get an idea of the data structure.
+**1. Start by loading the data `sydneybeaches`. Do some exploratory analysis to get an idea of the data structure.**
 ```{r}
-
+head(read.csv("data/sydneybeaches.csv"))
 ```
 
 If you want to try `here`, first notice the output when you load the `here` library. It gives you information on the current working directory. You can then use it to easily and intuitively load files.
@@ -49,28 +50,65 @@ The quotes show the folder structure from the root directory.
 sydneybeaches <-read_csv(here("lab8", "data", "sydneybeaches.csv")) %>% janitor::clean_names()
 ```
 
-2. Are these data "tidy" per the definitions of the tidyverse? How do you know? Are they in wide or long format?
+**2. Are these data "tidy" per the definitions of the tidyverse? How do you know? Are they in wide or long format?**
+```{r}
+unique(sydneybeaches$region)
+```
+
+No. The column "region" only has one value, "Sydney City Ocean Beaches". We can see this by doing `unique(sydneybeaches$region)`. This data is in long format. 
+
+**3. We are only interested in the variables site, date, and enterococci_cfu_100ml. Make a new object focused on these variables only. Name the object `sydneybeaches_long`**
+```{r}
+sydneybeaches_long <- sydneybeaches%>%
+  select("site", "date", "enterococci_cfu_100ml")
+```
 
 
-3. We are only interested in the variables site, date, and enterococci_cfu_100ml. Make a new object focused on these variables only. Name the object `sydneybeaches_long`
+**4. Pivot the data such that the dates are column names and each beach only appears once. Name the object `sydneybeaches_wide`**
+```{r}
+sydneybeaches_wide <- sydneybeaches_long%>%
+  pivot_wider(names_from = "date", values_from = "enterococci_cfu_100ml")
+```
 
 
-4. Pivot the data such that the dates are column names and each beach only appears once. Name the object `sydneybeaches_wide`
+**5. Pivot the data back so that the dates are data and not column names.**
+```{r}
+sydneybeaches_wide <- sydneybeaches_wide%>%
+  pivot_longer(-site, names_to = "date", values_to = "enterococci_cfu_100ml")
+```
 
 
-5. Pivot the data back so that the dates are data and not column names.
+**6. We haven't dealt much with dates yet, but separate the date into columns day, month, and year. Do this on the `sydneybeaches_long` data.**
+```{r}
+sydneybeaches_long <- sydneybeaches_long%>%
+  separate(date, into = c("day", "month", "year"), sep = "/")
+```
 
 
-6. We haven't dealt much with dates yet, but separate the date into columns day, month, and year. Do this on the `sydneybeaches_long` data.
+**7. What is the average `enterococci_cfu_100ml` by year for each beach. Think about which data you will use- long or wide.**
+```{r}
+sydneybeaches_long%>%
+  group_by(year, site)%>%
+  summarise(mean_enterocci_cfu_100ml=mean(enterococci_cfu_100ml, na.rm=T))
+```
 
 
-7. What is the average `enterococci_cfu_100ml` by year for each beach. Think about which data you will use- long or wide.
+**8. Make the output from question 7 easier to read by pivoting it to wide format.**
+```{r}
+sydneybeaches_mean <- sydneybeaches_long%>%
+  group_by(year, site)%>%
+  summarise(mean_enterocci_cfu_100ml=mean(enterococci_cfu_100ml, na.rm=T))%>%
+  pivot_wider(names_from = "site", values_from = "mean_enterocci_cfu_100ml")
+```
 
 
-8. Make the output from question 7 easier to read by pivoting it to wide format.
-
-
-9. What was the most polluted beach in 2018?
+**9. What was the most polluted beach in 2018?**
+```{r}
+sydneybeaches_mean_2018 <- sydneybeaches_mean%>%
+  filter(year=="2018")%>%
+  pivot_longer(-year, names_to = "site", values_to = "mean_pollution")
+sydneybeaches_mean_2018$site[which(sydneybeaches_mean_2018$mean_pollution == max(sydneybeaches_mean_2018$mean_pollution))]
+```
 
 
 10. Please complete the class project survey at: [BIS 15L Group Project](https://forms.gle/H2j69Z3ZtbLH3efW6)
