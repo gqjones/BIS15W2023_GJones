@@ -197,7 +197,7 @@ mammals <- homerange%>%
 mammals%>%
   group_by(trophic.guild)%>%
   ggplot(aes(trophic.guild))+
-    geom_bar()
+  geom_bar()
 ```
 
 
