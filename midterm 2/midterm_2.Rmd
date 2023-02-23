@@ -23,6 +23,8 @@ Please load the following libraries.
 library("tidyverse")
 library("janitor")
 library("naniar")
+library("ggthemes")
+library("RColorBrewer")
 ```
 
 ## Data
@@ -56,8 +58,9 @@ surgery%>%
 
 ```{r}
 surgery%>%
-  ggplot(aes(race))+
+  ggplot(aes(race, fill=race))+
   geom_bar()+
+  theme_igray()+
   labs(title="Counts of Participants by Race",
          x="Race",
          y="Counts")
@@ -77,8 +80,9 @@ surgery%>%
 surgery%>%
   filter(is.na(gender)==F)%>%
   filter(is.na(age)==F)%>%
-  ggplot(aes(gender, age))+
+  ggplot(aes(gender, age, fill=gender))+
   geom_boxplot()+
+  theme_igray()+
   labs(title="Range of Age by Gender",
          x="Gender",
          y="Age (Years)")
@@ -88,8 +92,9 @@ surgery%>%
 ```{r}
 surgery%>%
   filter(is.na(asa_status)==F)%>%
-  ggplot(aes(asa_status))+
+  ggplot(aes(asa_status, fill=asa_status))+
   geom_bar()+
+  theme_igray()+
   labs(title="Counts of ASA Statuses",
          x="ASA Status", # Note: rename values to healthy -> unhealthy
          y="Counts")
@@ -100,8 +105,9 @@ surgery%>%
 surgery%>%
   filter(is.na(bmi)==F)%>%
   filter(is.na(asa_status)==F)%>%
-  ggplot(aes(bmi))+
+  ggplot(aes(bmi, color=asa_status))+
   geom_density()+
+  theme_igray()+
   facet_wrap(~asa_status)+
   labs(title="Density Distribution of BMI for ASA Statuses",
          x="BMI", # Note: rename values to healthy -> unhealthy
@@ -135,8 +141,9 @@ surgery%>%
   as.data.frame()%>%
   ggplot(aes(ahrq_ccs, mean_mortality))+
   geom_col()+
+  theme_igray()+
   coord_flip()+
-  labs(title="30 Day Mortality Rate For Each Procedure",
+  labs(title="30 Day Mortality Rate By Procedure",
          x="Procedure",
          y="30 Day Mortality Rate")
 ```
@@ -144,14 +151,47 @@ surgery%>%
 
 9. (4 points) When is the best month to have surgery? Make a chart that shows the 30-day mortality and complications for the patients by month. `mort30` is the variable that shows whether or not a patient survived 30 days post-operation.
 ```{r}
-surgery%>%
-  group_by(month)%>%
-  ggplot(aes(mort30))+
-  geom_bar()+
-  facet_wrap(month, ncol = 6)
+# Variables are in the form: Survived 30 days?_Complications?
+yes_no<-surgery%>%
+  filter(mort30=='Yes')%>%
+  count(month)%>%
+  as.data.frame()%>%
+  rename(survived=n)
+
+no_yes<-surgery%>%
+  filter(complication=='No')%>%
+  count(month)%>%
+  as.data.frame()%>%
+  rename(no_complications=n)
+
+yes_yes<-surgery%>%
+  filter(mort30=='Yes' & complication=='No')%>%
+  count(month)%>%
+  as.data.frame()%>%
+  rename(survived_with_no_complications=n)
+
+month_data<-bind_cols(yes_no, no_yes)
+month_data<-bind_cols(month_data, yes_yes)
+month_data$month = month_data$month...1
+month_data<-month_data%>%
+  select(month, survived, no_complications, survived_with_no_complications)
+month_data
 ```
 
 10. (4 points) Make a plot that visualizes the chart from question #9. Make sure that the months are on the x-axis. Do a search online and figure out how to order the months Jan-Dec.
+```{r}
+month_data%>%
+  pivot_longer(cols=-month, names_to = "status", values_to = "n")%>%
+  ggplot(aes(month, n))+
+  geom_col()+
+  theme_igray()+
+  scale_x_discrete(limits=month.abb)+
+  facet_wrap(~status, ncol=3, scales="free_y")+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))+
+  labs(title="Procedure Survivability and Complications per Month",
+       x="Month",
+       y="Count")
+```
 
 Please provide the names of the students you have worked with with during the exam:
 
