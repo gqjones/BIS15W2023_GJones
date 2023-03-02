@@ -59,7 +59,26 @@ spider_list[[3]]
 ## Practice
 1. Getting an idea of the structure of lists is a bit tricky, especially when there are many elements. Try exploring the elements in `spider_list` using names(), str(), or glimpse(). For names(), you will need to specify an element using [[]].  
 ```{r}
+```
 
+## Naming List Elements
+```{r}
+names <- list.files(path="data/spiders", pattern=" .csv")
+names_list <- strsplit(names, split=" .csv")
+names_list
+```
+
+```{r}
+names_vec <- unlist(names_list) # Converts the names list to a vector
+```
+
+```{r}
+names(spider_list) <- names_vec # Applies the names in names_vec to the data frames in the list spider_list
+```
+
+## Accessing Data Frames in a List
+```{r}
+spider_list$Kern
 ```
 
 ## Merging Files
@@ -92,27 +111,28 @@ The general syntax for joins is...
 ```
 
 `inner_join`  
-Where did customers 3 and 4 go?
+Where did customers 3 and 4 go? inner_join() returns a data frame with all the data from both data frames that contain the same customer_ID
 ```{r}
 inner_exampleDF <- inner_join(table_A, table_B, by="customer_ID")
 inner_exampleDF
 ```
 
 `left_join`
-Where did customer 4 go? Notice the missing data for customer 3.
+Where did customer 4 go? Notice the missing data for customer 3. left_join() is an inner join but keeps all the data from the first data frame
 ```{r}
 left_exampleDF <- left_join(table_A, table_B, by="customer_ID")
 left_exampleDF
 ```
 
 `right_join`
-Where did customer 3 go? Notice the missing data for customer 4.
+Where did customer 3 go? Notice the missing data for customer 4. right_join() is an inner join but keeps all the data from the second data frame
 ```{r}
 right_exampleDF <- right_join(table_A, table_B, by="customer_ID")
 right_exampleDF
 ```
 
 `full_join`
+full_join() returns a combination of the two data frames regardless of matches/mismatches
 ```{r}
 full_exampleDF <- full_join(table_A, table_B, by="customer_ID")
 full_exampleDF
@@ -190,7 +210,7 @@ dateformat5 <- "20200922 170000"
 ## Practice 
 1. Convert each of the examples above using lubridate.
 ```{r}
-
+mdy(dateformat2)
 ```
 
 ## A few more tricks...
@@ -215,9 +235,9 @@ write.csv(spiders_with_locs, file = "spiders_with_locs.csv", row.names = FALSE)
 It will be very helpful if you can install the following packages before the next lab. Please install them in order!
 `devtools` and `ggmap`
 ```{r}
-#install.packages("devtools")
-#library(devtools)
-#devtools::install_github("dkahle/ggmap")
+install.packages("devtools")
+library(devtools)
+devtools::install_github("dkahle/ggmap")
 ```
 
 ## That's it, let's take a break!   

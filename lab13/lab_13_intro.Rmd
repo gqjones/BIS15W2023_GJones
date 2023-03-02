@@ -24,8 +24,46 @@ For this exercise, let's use some data on elephants. These data are from Phyllis
 elephants <- read.csv("data/ElephantsMF.csv")
 ```
 
+```{r}
+glimpse(elephants)
+```
+
 2. Make a simple shiny app that produces a scatterplot of age vs. height with reactivity assigned to sex. Make sure to include a title and try to incorporate the reference to the data.
 
 ```{r, eval=F, echo=T}
+library(shiny)
 
+ui <- fluidPage(
+  titlePanel("Age vs Height in Elephants"),
+  selectInput("sex", "Sex", choices = unique(elephants$Sex)),
+  helpText("Referance: Phyllis Lee, Stirling University, and are related to Lee, P., et al. (2013), Enduring consequences of early experiences: 40-year effects on survival and success among African elephants (Loxodonta Africana), Biology Letters, 9: 20130011."),
+  plotOutput("plot", width="800px", height="600px")
+)
+
+server <- function(input, output, session) {
+  session$onSessionEnded(stopApp)
+  if (input$sex == "M"){
+   output$plot <- renderPlot({
+    elephants%>%
+      filter(Sex=="M")%>%
+      ggplot(aes(Age, Height))+
+      geom_point()
+     })} else {
+  output$plot <- renderPlot({
+    elephants%>%
+      filter(Sex=="F")%>%
+      ggplot(aes(Age, Height))+
+      geom_point()
+  })}
+}
+
+shinyApp(ui, server)
 ```
+
+```{r}
+elephants%>%
+      filter(Sex=="M")%>%
+      ggplot(aes(Age, Height))+
+      geom_point()
+```
+
